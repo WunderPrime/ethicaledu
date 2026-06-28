@@ -1,0 +1,27 @@
+{% extends 'detection/base.html' %}
+{% block titre %}Consulter le rapport{% endblock %}
+{% block contenu %}
+<div class="card">
+    <div class="card-body">
+        <h4 class="mb-3">{{ travail.titre }}</h4>
+        <p class="text-muted">Soumis le {{ travail.date_depot|date:"d/m/Y H:i" }}</p>
+
+        {% if rapport %}
+            <a href="{% url 'detection:detail_rapport' rapport.id %}" class="btn btn-primary text-white">
+                <i class="fa-solid fa-file-lines"></i> Voir le rapport détaillé
+            </a>
+        {% elif travail.statut == 'analyse' %}
+            <p class="text-muted">Le rapport n'a pas pu être généré.</p>
+        {% elif travail.statut == 'extrait' %}
+            <div class="alert alert-info mb-0">
+                Votre travail a été soumis et son texte extrait avec succès.
+                Il est en attente d'analyse par l'enseignant.
+            </div>
+        {% else %}
+            <div class="alert alert-secondary mb-0">
+                Votre travail est en cours de traitement.
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

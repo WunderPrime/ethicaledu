@@ -1,0 +1,29 @@
+{% extends 'detection/base.html' %}
+{% block titre %}Configuration du système{% endblock %}
+{% block contenu %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card p-4">
+            <h4 class="mb-4"><i class="fa-solid fa-gear text-primary"></i> Configuration du système</h4>
+            <form method="post">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label class="form-label">Seuil d'alerte (%)</label>
+                    {{ form.seuil_alerte }}
+                    <div class="form-text">Taux de similarité au-delà duquel un travail est signalé comme suspect.</div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Taille des n-grammes</label>
+                    {{ form.taille_ngramme }}
+                    <div class="form-text">Nombre de mots consécutifs utilisés pour la comparaison (algorithme Jaccard).</div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Algorithme par défaut</label>
+                    {{ form.algorithme_par_defaut }}
+                </div>
+                <button type="submit" class="btn btn-primary text-white w-100">Appliquer la configuration</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends 'detection/base.html' %}
+{% block titre %}Soumettre un travail{% endblock %}
+{% block contenu %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card p-4">
+            <h4 class="mb-4"><i class="fa-solid fa-upload text-primary"></i> Soumettre un travail</h4>
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label class="form-label">Titre du travail</label>
+                    {{ form.titre }}
+                    <div class="text-danger small">{{ form.titre.errors }}</div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Fichier (PDF, DOCX ou TXT)</label>
+                    {{ form.fichier }}
+                    <div class="text-danger small">{{ form.fichier.errors }}</div>
+                    <div class="form-text">Le texte sera extrait automatiquement après soumission.</div>
+                </div>
+                <button type="submit" class="btn btn-primary text-white w-100">Soumettre</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

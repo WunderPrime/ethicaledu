@@ -1,0 +1,51 @@
+{% extends 'detection/base.html' %}
+{% block titre %}{% if mode == 'creation' %}Nouvel utilisateur{% else %}Modifier l'utilisateur{% endif %}{% endblock %}
+{% block contenu %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card p-4">
+            <h4 class="mb-4">
+                {% if mode == 'creation' %}
+                    <i class="fa-solid fa-user-plus text-primary"></i> Nouvel utilisateur
+                {% else %}
+                    <i class="fa-solid fa-user-pen text-primary"></i> Modifier {{ utilisateur.username }}
+                {% endif %}
+            </h4>
+            <form method="post">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label class="form-label">Nom d'utilisateur</label>
+                    {{ form.username }}
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Prénom</label>
+                        {{ form.first_name }}
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Nom</label>
+                        {{ form.last_name }}
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Email</label>
+                    {{ form.email }}
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Rôle</label>
+                    {{ form.role }}
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Mot de passe {% if mode == 'edition' %}(optionnel){% endif %}</label>
+                    {{ form.password }}
+                </div>
+                <div class="form-check mb-3">
+                    {{ form.is_active }}
+                    <label class="form-check-label">Compte actif</label>
+                </div>
+                <button type="submit" class="btn btn-primary text-white w-100">Enregistrer</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

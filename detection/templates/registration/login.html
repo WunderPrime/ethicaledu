@@ -1,0 +1,31 @@
+{% extends 'detection/base.html' %}
+{% block titre %}Connexion{% endblock %}
+{% block contenu %}
+<div class="row justify-content-center">
+    <div class="col-md-5">
+        <div class="card p-4">
+            <h4 class="mb-4 text-center">Connexion</h4>
+            <form method="post">
+                {% csrf_token %}
+                {% if form.non_field_errors %}
+                    <div class="alert alert-danger">{{ form.non_field_errors }}</div>
+                {% endif %}
+                <div class="mb-3">
+                    <label class="form-label">Nom d'utilisateur</label>
+                    {{ form.username.errors }}
+                    <input type="text" name="username" class="form-control" required autofocus>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Mot de passe</label>
+                    {{ form.password.errors }}
+                    <input type="password" name="password" class="form-control" required>
+                </div>
+                <button type="submit" class="btn btn-primary text-white w-100">Se connecter</button>
+            </form>
+            <p class="text-center mt-3 mb-0">
+                Pas encore de compte ? <a href="{% url 'detection:inscription' %}">S'inscrire</a>
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}

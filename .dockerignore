@@ -1,0 +1,28 @@
+# Cache Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.pyc
+
+# Base de données locale
+db.sqlite3
+
+# Environnement virtuel
+venv/
+env/
+.env
+
+# Fichiers media uploadés (gérés par le volume Docker)
+media/
+
+# Fichiers statiques collectés
+staticfiles/
+
+# IDE
+.vscode/
+.idea/
+
+# Git
+.git/
+.gitignore

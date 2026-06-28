@@ -1,0 +1,86 @@
+{% extends 'detection/base.html' %}
+{% block titre %}Tableau de bord — Enseignant{% endblock %}
+{% block contenu %}
+<h3 class="fw-bold mb-4">Tableau de bord enseignant</h3>
+
+<div class="card mb-4">
+    <div class="card-body">
+        <h5 class="card-title">
+            <i class="fa-solid fa-hourglass-half text-warning"></i>
+            Travaux en attente d'analyse
+        </h5>
+        {% if travaux_en_attente %}
+        <div class="table-responsive mt-3">
+            <table class="table align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>Titre</th>
+                        <th>Étudiant</th>
+                        <th>Date de dépôt</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for travail in travaux_en_attente %}
+                    <tr>
+                        <td>{{ travail.titre }}</td>
+                        <td>{{ travail.etudiant.username }}</td>
+                        <td>{{ travail.date_depot|date:"d/m/Y H:i" }}</td>
+                        <td>
+                            <a href="{% url 'detection:lancer_analyse' travail.id %}" class="btn btn-sm btn-primary text-white">
+                                <i class="fa-solid fa-magnifying-glass"></i> Analyser
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <p class="text-muted mb-0">Aucun travail en attente d'analyse pour le moment.</p>
+        {% endif %}
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title"><i class="fa-solid fa-clock-rotate-left text-secondary"></i> Analyses récentes</h5>
+        {% if analyses_recentes %}
+        <div class="table-responsive mt-3">
+            <table class="table align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>Travail</th>
+                        <th>Algorithme</th>
+                        <th>Taux de plagiat</th>
+                        <th>Date</th>
+                        <th>Rapport</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for analyse in analyses_recentes %}
+                    <tr>
+                        <td>{{ analyse.travail.titre }}</td>
+                        <td>{{ analyse.get_algorithme_display }}</td>
+                        <td>
+                            <span class="{% if analyse.taux_plagiat >= 30 %}similarity-high{% else %}similarity-low{% endif %}">
+                                {{ analyse.taux_plagiat|floatformat:1 }}%
+                            </span>
+                        </td>
+                        <td>{{ analyse.date_analyse|date:"d/m/Y H:i" }}</td>
+                        <td>
+                            {% if analyse.rapport %}
+                            <a href="{% url 'detection:detail_rapport' analyse.rapport.id %}" class="btn btn-sm btn-outline-primary">Voir</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <p class="text-muted mb-0">Aucune analyse n'a encore été réalisée.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

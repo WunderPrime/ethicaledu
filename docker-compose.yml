@@ -1,0 +1,22 @@
+version: "3.9"
+
+services:
+  web:
+    build: .
+    container_name: ethicaledu_web
+    ports:
+      - "8000:8000"
+    volumes:
+      # Persistance de la base de données SQLite entre les redémarrages
+      - sqlite_data:/app/db_volume
+      # Persistance des fichiers uploadés (travaux PDF/DOCX)
+      - media_data:/app/media
+    environment:
+      - DJANGO_DEBUG=True
+      - DJANGO_SECRET_KEY=ethicaledu-secret-key-change-in-production
+      - DB_PATH=/app/db_volume/db.sqlite3
+    restart: unless-stopped
+
+volumes:
+  sqlite_data:
+  media_data:

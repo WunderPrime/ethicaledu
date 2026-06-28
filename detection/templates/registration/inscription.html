@@ -1,0 +1,75 @@
+{% extends 'detection/base.html' %}
+{% block titre %}Inscription{% endblock %}
+{% block contenu %}
+<div class="row justify-content-center">
+    <div class="col-md-7">
+        <div class="card p-4">
+            <h4 class="mb-4 text-center">Créer un compte</h4>
+            <form method="post">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Nom d'utilisateur</label>
+                        {{ form.username }}
+                        <div class="text-danger small">{{ form.username.errors }}</div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Je suis</label>
+                        {{ form.role }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Prénom</label>
+                        {{ form.first_name }}
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Nom</label>
+                        {{ form.last_name }}
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Adresse e-mail</label>
+                    {{ form.email }}
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Numéro étudiant (si étudiant)</label>
+                        {{ form.num_etudiant }}
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Filière (si étudiant)</label>
+                        {{ form.filiere }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Département (si enseignant)</label>
+                        {{ form.departement }}
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Grade (si enseignant)</label>
+                        {{ form.grade }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Mot de passe</label>
+                        {{ form.password1 }}
+                        <div class="text-danger small">{{ form.password1.errors }}</div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Confirmation</label>
+                        {{ form.password2 }}
+                        <div class="text-danger small">{{ form.password2.errors }}</div>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary text-white w-100">S'inscrire</button>
+            </form>
+            <p class="text-center mt-3 mb-0">
+                Déjà un compte ? <a href="{% url 'detection:login' %}">Se connecter</a>
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}

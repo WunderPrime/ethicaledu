@@ -1,0 +1,107 @@
+{% extends 'detection/base.html' %}
+{% block titre %}Tableau de bord — Admin{% endblock %}
+{% block contenu %}
+<h3 class="fw-bold mb-4">
+    <i class="fa-solid fa-chart-bar text-secondary"></i>
+    Tableau de bord administrateur
+</h3>
+
+<div class="row g-3 mb-4">
+    <div class="col-md-3 col-6">
+        <div class="card p-3 text-center">
+            <div class="fs-3 fw-bold text-primary">{{ stats.nb_utilisateurs }}</div>
+            <div class="text-muted small">Utilisateurs</div>
+        </div>
+    </div>
+    <div class="col-md-3 col-6">
+        <div class="card p-3 text-center">
+            <div class="fs-3 fw-bold text-primary">{{ stats.nb_etudiants }}</div>
+            <div class="text-muted small">Étudiants</div>
+        </div>
+    </div>
+    <div class="col-md-3 col-6">
+        <div class="card p-3 text-center">
+            <div class="fs-3 fw-bold text-primary">{{ stats.nb_travaux }}</div>
+            <div class="text-muted small">Travaux soumis</div>
+        </div>
+    </div>
+    <div class="col-md-3 col-6">
+        <div class="card p-3 text-center">
+            <div class="fs-3 fw-bold text-primary">{{ stats.nb_analyses }}</div>
+            <div class="text-muted small">Analyses réalisées</div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-3 mb-4">
+    <div class="col-md-6">
+        <div class="card p-3 text-center">
+            <div class="fs-3 fw-bold {% if stats.taux_moyen >= 30 %}similarity-high{% else %}similarity-low{% endif %}">
+                {{ stats.taux_moyen }}%
+            </div>
+            <div class="text-muted small">Taux moyen de similarité</div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card p-3 text-center">
+            <div class="fs-3 fw-bold text-danger">{{ stats.nb_suspects }}</div>
+            <div class="text-muted small">Travaux suspects (au-delà du seuil d'alerte)</div>
+        </div>
+    </div>
+</div>
+
+<div class="card mb-4">
+    <div class="card-body">
+        <h5 class="card-title mb-3">
+            <i class="fa-solid fa-chart-column text-secondary"></i>
+            Évolution des soumissions et analyses (6 derniers mois)
+        </h5>
+        <div style="position: relative; height: 280px;">
+            <canvas id="chartStats"></canvas>
+        </div>
+    </div>
+</div>
+
+<div class="d-flex gap-2">
+    <a href="{% url 'detection:gerer_utilisateurs' %}" class="btn btn-outline-primary">
+        <i class="fa-solid fa-users"></i> Gérer les utilisateurs
+    </a>
+    <a href="{% url 'detection:configurer_systeme' %}" class="btn btn-outline-primary">
+        <i class="fa-solid fa-gear"></i> Configurer le système
+    </a>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.4/chart.umd.min.js"></script>
+<script>
+const ctx = document.getElementById('chartStats').getContext('2d');
+new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: {{ labels_mois|safe }},
+        datasets: [
+            {
+                label: 'Travaux soumis',
+                data: {{ soumissions_data|safe }},
+                backgroundColor: '#33658a',
+                borderRadius: 4,
+            },
+            {
+                label: 'Analyses réalisées',
+                data: {{ analyses_data|safe }},
+                backgroundColor: '#4f9d69',
+                borderRadius: 4,
+            }
+        ]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { position: 'bottom' } },
+        scales: {
+            x: { grid: { display: false } },
+            y: { beginAtZero: true, ticks: { precision: 0 } }
+        }
+    }
+});
+</script>
+{% endblock %}

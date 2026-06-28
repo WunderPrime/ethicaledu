@@ -1,0 +1,34 @@
+{% extends 'detection/base.html' %}
+{% block titre %}Accueil — EthicalEdu{% endblock %}
+{% block contenu %}
+<div class="row align-items-center py-5">
+    <div class="col-lg-7">
+        <h1 class="fw-bold mb-3">EthicalEdu</h1>
+        <p class="lead text-muted">
+            Soumettez vos travaux, comparez-les automatiquement avec une base de
+            documents existants, et obtenez un rapport détaillé avec mise en
+            évidence des passages similaires.
+        </p>
+        {% if not user.is_authenticated %}
+        <div class="mt-4">
+            <a href="{% url 'detection:login' %}" class="btn btn-primary text-white me-2">Se connecter</a>
+            <a href="{% url 'detection:inscription' %}" class="btn btn-outline-secondary">Créer un compte</a>
+        </div>
+        {% else %}
+        <a href="{% url 'detection:dashboard' %}" class="btn btn-primary text-white mt-3">Accéder à mon tableau de bord</a>
+        {% endif %}
+    </div>
+    <div class="col-lg-5">
+        <div class="card p-4">
+            <h5 class="mb-3"><i class="fa-solid fa-list-check text-primary"></i> Fonctionnalités</h5>
+            <ul class="list-unstyled mb-0">
+                <li class="mb-2"><i class="fa-solid fa-upload text-secondary me-2"></i> Soumission de travaux (PDF / DOCX)</li>
+                <li class="mb-2"><i class="fa-solid fa-file-lines text-secondary me-2"></i> Extraction automatique du texte</li>
+                <li class="mb-2"><i class="fa-solid fa-percent text-secondary me-2"></i> Calcul du taux de similarité</li>
+                <li class="mb-2"><i class="fa-solid fa-highlighter text-secondary me-2"></i> Mise en évidence des passages</li>
+                <li class="mb-0"><i class="fa-solid fa-clock-rotate-left text-secondary me-2"></i> Historique des soumissions</li>
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}

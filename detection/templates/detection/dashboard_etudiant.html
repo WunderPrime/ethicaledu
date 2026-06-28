@@ -1,0 +1,66 @@
+{% extends 'detection/base.html' %}
+{% block titre %}Tableau de bord — Étudiant{% endblock %}
+{% block contenu %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h3 class="fw-bold mb-0">Mes travaux</h3>
+    <a href="{% url 'detection:soumettre_travail' %}" class="btn btn-primary text-white">
+        <i class="fa-solid fa-upload"></i> Soumettre un travail
+    </a>
+</div>
+
+{% if travaux %}
+<div class="card">
+    <div class="table-responsive">
+        <table class="table align-middle mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th>Titre</th>
+                    <th>Date de dépôt</th>
+                    <th>Statut</th>
+                    <th>Taux de plagiat</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for travail in travaux %}
+                <tr>
+                    <td>{{ travail.titre }}</td>
+                    <td>{{ travail.date_depot|date:"d/m/Y H:i" }}</td>
+                    <td>
+                        {% if travail.statut == 'en_attente' %}
+                            <span class="badge bg-secondary">En attente</span>
+                        {% elif travail.statut == 'extrait' %}
+                            <span class="badge bg-info text-dark">Texte extrait</span>
+                        {% elif travail.statut == 'analyse' %}
+                            <span class="badge bg-success">Analysé</span>
+                        {% else %}
+                            <span class="badge bg-danger">Erreur</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if travail.analyse %}
+                            <span class="{% if travail.analyse.taux_plagiat >= 30 %}similarity-high{% else %}similarity-low{% endif %}">
+                                {{ travail.analyse.taux_plagiat|floatformat:1 }}%
+                            </span>
+                        {% else %}
+                            <span class="text-muted">—</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a href="{% url 'detection:consulter_rapport' travail.id %}" class="btn btn-sm btn-outline-primary">
+                            Consulter le rapport
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% else %}
+<div class="card p-5 text-center text-muted">
+    <i class="fa-solid fa-inbox fa-2x mb-3"></i>
+    <p class="mb-0">Vous n'avez encore soumis aucun travail.</p>
+</div>
+{% endif %}
+{% endblock %}
