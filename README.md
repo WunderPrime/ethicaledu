@@ -32,7 +32,6 @@ Les fichiers uploadés et la base de données sont conservés entre les redémar
 
 ---
 
-## Installation sans Docker (développement local)
 
 ## Installation sans Docker (développement local)
 
